@@ -10,16 +10,24 @@ exports.load = function(req,res, next, quizId) {
         req.quiz = quiz;
         next();
       } else { next(new Error('No existe quizId=' +quizId));}
-    }
-    ).catch(function(error){ next(error);});
+    }).catch(function(error){ next(error);});
 };
+
+
 
 
 // GET /quizes/index
 exports.index = function(req, res) {
-  models.Quiz.findAll().then(function(quizes){
-    res.render('quizes/index.ejs' , {quizes : quizes});
-  }).catch(function(error) { next(error);}) // por si hay un error 
+  var search = 'No hay valor';
+  if(req.query.search != null){
+    models.Quiz.findAll().then(function(quizes){
+      res.render('quizes/index.ejs' , {quizes : quizes, search : req.query.search});
+    }).catch(function(error) { next(error);}); // por si hay un error 
+  } else {
+    models.Quiz.findAll().then(function(quizes){
+      res.render('quizes/index.ejs' , {quizes : quizes, search : req.query.search});
+    }).catch(function(error) { next(error);}); // por si hay un error 
+  }
 };
 
 //GET /quizes/:quizId(\\d+)

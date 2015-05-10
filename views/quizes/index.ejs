@@ -4,3 +4,11 @@
 <% } %>
 </table> <p>
 <a href="/quizes/new"><button type="button">Crear pregunta</button></a>
+<form method="get" action="/quizes">
+Búsqueda de pregunta
+<input type="text" name="search" placeholder="Escribe aquí palabras clave" />
+<input type="submit" value="Buscar">
+</form>
+<% if(search!= null) { %>
+<p>El valor de la búsqueda es: <%= search %></p>
+<% } %>
