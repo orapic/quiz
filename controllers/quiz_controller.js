@@ -14,14 +14,20 @@ exports.load = function(req,res, next, quizId) {
 };
 
 
-
+//function auxiliar para cambiar los espacios de la busqueda por %
+function cleanInput(data) {
+  var cleanData = data.toString().replace(/(\s)/gm,"%");
+  var porcentaje = "%";
+  cleanData = porcentaje.concat(cleanData,porcentaje);
+  return cleanData;
+}
 
 // GET /quizes/index
 exports.index = function(req, res) {
-  var search = 'No hay valor';
-  if(req.query.search != null){
-    models.Quiz.findAll().then(function(quizes){
-      res.render('quizes/index.ejs' , {quizes : quizes, search : req.query.search});
+  if(req.query.search != null){ // si no es null la busqueda hay que buscar en la base de datos
+    var cleanSearch = cleanInput(req.query.search);
+    models.Quiz.findAll({where: ["pregunta like ?", cleanSearch]}).then(function(quizes){
+      res.render('quizes/index.ejs' , {quizes : quizes, search : cleanSearch});
     }).catch(function(error) { next(error);}); // por si hay un error 
   } else {
     models.Quiz.findAll().then(function(quizes){

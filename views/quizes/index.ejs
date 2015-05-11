@@ -1,6 +1,8 @@
 <table>
+<% if(search== null) { %>
 <% var i; for (i=0; i <quizes.length; i++) { %>
 	<tr><td><a href="quizes/<%= quizes[i].id %>"><%= quizes[i].pregunta %></a></td></tr>
+<% } %>
 <% } %>
 </table> <p>
 <a href="/quizes/new"><button type="button">Crear pregunta</button></a>
@@ -11,4 +13,9 @@ Búsqueda de pregunta
 </form>
 <% if(search!= null) { %>
 <p>El valor de la búsqueda es: <%= search %></p>
+<table>
+<% var i; for (i=0; i <quizes.length; i++) { %>
+	<tr><td><a href="quizes/<%= quizes[i].id %>"><%= quizes[i].pregunta %></a></td></tr>
+<% } %>
+</table>
 <% } %>
