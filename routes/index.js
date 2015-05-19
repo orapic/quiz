@@ -41,5 +41,7 @@ router.get('/author', function(req,res){
 	res.render('author', { title: 'Quiz' , errors:[]});
 });
 
+// GET /quizes/statistics
+router.get('/quizes/statistics', statisticsController.index);
 
 module.exports = router;
