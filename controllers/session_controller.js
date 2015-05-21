@@ -34,7 +34,10 @@ exports.create = function(req, res) {
         // Crear req.session.user y guardar campos   id  y  username
         // La sesión se define por la existencia de:    req.session.user
         req.session.user = {id:user.id, username:user.username};
-
+        var fechaUltimaTransaccion = new Date();
+        var minutesDate = fechaUltimaTransaccion.getTime();
+        req.session.horaUlt = minutesDate;
+        console.log("la hora de inicio de sesion es:" +req.session.horaUlt);
         res.redirect(req.session.redir.toString());// redirección a path anterior a login
 
     });

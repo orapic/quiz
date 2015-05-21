@@ -27,6 +27,8 @@ app.use(bodyParser.urlencoded());
 app.use(cookieParser('Quiz 2015'));
 app.use(methodOverride('_method'));
 app.use(session());
+
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Helper dinámico
@@ -42,6 +44,23 @@ app.use(function(req,res, next) {
     next();
 });
 
+// Autologout
+app.use(function(req,res,next) {
+    if(req.session.user){
+    var newDate = new Date();
+    var newDateTime = newDate.getTime();
+    var d = req.session.horaUlt;
+    
+    if( newDateTime > (d+120000) ) {
+        delete req.session.user;
+        delete req.session.horaUlt;
+        res.redirect(req.path); // redirect a path anterior a login
+    } else {
+        req.session.horaUlt = newDateTime;
+        next();
+    }
+    } else {next();}
+});
 
 app.use('/', routes);
 
