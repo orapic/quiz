@@ -5,6 +5,7 @@ var quizController = require('../controllers/quiz_controller');
 var commentController = require('../controllers/comment_controller');
 var sessionController = require('../controllers/session_controller');
 var statisticsController = require('../controllers/statistics_controller');
+var userController = require('../controllers/user_controller');
 
 /* GET home page. */
 router.get('/', function(req, res) {
@@ -16,6 +17,7 @@ router.get('/', function(req, res) {
 // Sólo se ejecuta si hay parametros, si no los hay no lo hace
 router.param('quizId', quizController.load); // autoload :quizId
 router.param('commentId', commentController.load); // autoload :commentId
+router.param('userId', userController.load); // autoload :userId
 
 // Definición de rutas de sesión
 router.get('/login' , sessionController.new); // formulario login
@@ -32,9 +34,17 @@ router.get('/quizes/:quizId(\\d+)/edit',sessionController.loginRequired, quizCon
 router.put('/quizes/:quizId(\\d+)', sessionController.loginRequired, quizController.update); 
 router.delete('/quizes/:quizId(\\d+)' , sessionController.loginRequired, quizController.destroy); // borrar una pregunta
 
+// Definición de rutas de sesión
 router.get('/quizes/:quizId(\\d+)/comments/new', commentController.new);
 router.post('/quizes/:quizId(\\d+)/comments' , commentController.create);
 router.get('/quizes/:quizId(\\d+)/comments/:commentId(\\d+)/publish' , sessionController.loginRequired, commentController.publish); // uso no correcto, debería ser un put
+
+//definición de rutas de cuenta
+router.get('/user', userController.new); // formulario sign in
+router.post('/user', userController.create); // registrar usuario
+router.get('/user/:userId(\\d+)/edit',sessionController.loginRequired,userController.edit);
+router.put('/user/:userId(\\d+)', sessionController.loginRequired, userController.update);
+router.delete('/user/:userId(\\d+)', sessionController.loginRequired,userController.destroy);
 
 //página de créditos
 router.get('/author', function(req,res){
