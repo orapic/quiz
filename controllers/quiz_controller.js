@@ -1,5 +1,19 @@
 var models = require('../models/models.js');
 
+// MW que permite acciones solamente si el quiz objeto
+// pertenece al usuario logeado o is es cuneta admin
+exports.ownershipRequired = function(req, res, next) {
+  var objQuizOwner = req.quiz.UserId;
+  var logUser = req.session.user.id;
+  var isAdmin = req.session.user.isAdmin;
+
+  if (isAdmin || objQuizOwner === logUser) {
+    next();
+  } else {
+    res.redirect('/');
+  }
+};
+
 // Autoload - factoriza el código si ruta incluye :quizId
 // Inicia una búsqueda con el identificador que se le pasa
 // en caso de no encontrarlo, quiz sería undefined y se pasa al error

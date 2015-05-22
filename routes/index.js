@@ -30,21 +30,21 @@ router.get('/quizes/:quizId(\\d+)' , quizController.show);
 router.get('/quizes/:quizId(\\d+)/answer' , quizController.answer);
 router.get('/quizes/new' , sessionController.loginRequired, quizController.new); // crear una pregunta
 router.post('/quizes/create' , sessionController.loginRequired, quizController.create); 
-router.get('/quizes/:quizId(\\d+)/edit',sessionController.loginRequired, quizController.edit); // editar una pregunta
-router.put('/quizes/:quizId(\\d+)', sessionController.loginRequired, quizController.update); 
-router.delete('/quizes/:quizId(\\d+)' , sessionController.loginRequired, quizController.destroy); // borrar una pregunta
+router.get('/quizes/:quizId(\\d+)/edit',sessionController.loginRequired, quizController.ownershipRequired, quizController.edit); // editar una pregunta
+router.put('/quizes/:quizId(\\d+)', sessionController.loginRequired, quizController.ownershipRequired, quizController.update); 
+router.delete('/quizes/:quizId(\\d+)' , sessionController.loginRequired, quizController.ownershipRequired, quizController.destroy); // borrar una pregunta
 
 // Definición de rutas de sesión
 router.get('/quizes/:quizId(\\d+)/comments/new', commentController.new);
 router.post('/quizes/:quizId(\\d+)/comments' , commentController.create);
-router.get('/quizes/:quizId(\\d+)/comments/:commentId(\\d+)/publish' , sessionController.loginRequired, commentController.publish); // uso no correcto, debería ser un put
+router.get('/quizes/:quizId(\\d+)/comments/:commentId(\\d+)/publish' , sessionController.loginRequired, commentController.ownershipRequired, commentController.publish); // uso no correcto, debería ser un put
 
 //definición de rutas de cuenta
 router.get('/user', userController.new); // formulario sign in
 router.post('/user', userController.create); // registrar usuario
-router.get('/user/:userId(\\d+)/edit',sessionController.loginRequired,userController.edit);
-router.put('/user/:userId(\\d+)', sessionController.loginRequired, userController.update);
-router.delete('/user/:userId(\\d+)', sessionController.loginRequired,userController.destroy);
+router.get('/user/:userId(\\d+)/edit',sessionController.loginRequired, userController.ownershipRequired,userController.edit);
+router.put('/user/:userId(\\d+)', sessionController.loginRequired, userController.ownershipRequired, userController.update);
+router.delete('/user/:userId(\\d+)', sessionController.loginRequired, userController.ownershipRequired, userController.destroy);
 
 //página de créditos
 router.get('/author', function(req,res){
