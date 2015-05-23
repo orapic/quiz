@@ -44,14 +44,22 @@ function cleanInput(data) {
 }
 
 // GET /quizes/index
+// GET /users/:userId/quizes
 exports.index = function(req, res) {
+
+  var options = {};
+  if(req.user) {
+    // req.user es creado por autoload de usuario
+    // si la ruta lleva el parámetro .quizId
+    options.where = {UserId: req.user.id}
+  }
   if(req.query.search != null){ // si no es null la busqueda hay que buscar en la base de datos
     var cleanSearch = cleanInput(req.query.search);
     models.Quiz.findAll({where: ["pregunta like ?", cleanSearch] , order: ['pregunta']}).then(function(quizes){
       res.render('quizes/index.ejs' , {quizes : quizes, search : cleanSearch, errors: []});
     }).catch(function(error) { next(error);}); // por si hay un error 
   } else {
-    models.Quiz.findAll().then(function(quizes){
+    models.Quiz.findAll(options).then(function(quizes){
       res.render('quizes/index.ejs' , {quizes : quizes, search : req.query.search, errors: []});
     }).catch(function(error) { next(error)}); // por si hay un error 
   }
