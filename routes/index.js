@@ -1,4 +1,5 @@
 var express = require('express');
+var multer = require('multer');
 var router = express.Router();
 
 var quizController = require('../controllers/quiz_controller');
@@ -29,9 +30,9 @@ router.get('/quizes', 	quizController.index);
 router.get('/quizes/:quizId(\\d+)' , quizController.show);
 router.get('/quizes/:quizId(\\d+)/answer' , quizController.answer);
 router.get('/quizes/new' , sessionController.loginRequired, quizController.new); // crear una pregunta
-router.post('/quizes/create' , sessionController.loginRequired, quizController.create); 
+router.post('/quizes/create' , sessionController.loginRequired, multer({ dest: './public/media/'}), quizController.create); 
 router.get('/quizes/:quizId(\\d+)/edit',sessionController.loginRequired, quizController.ownershipRequired, quizController.edit); // editar una pregunta
-router.put('/quizes/:quizId(\\d+)', sessionController.loginRequired, quizController.ownershipRequired, quizController.update); 
+router.put('/quizes/:quizId(\\d+)', sessionController.loginRequired, quizController.ownershipRequired, multer({ dest: './public/media/'}), quizController.update); 
 router.delete('/quizes/:quizId(\\d+)' , sessionController.loginRequired, quizController.ownershipRequired, quizController.destroy); // borrar una pregunta
 
 // Definición de rutas de sesión
